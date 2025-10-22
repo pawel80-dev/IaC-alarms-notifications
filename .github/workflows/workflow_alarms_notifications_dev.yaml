@@ -1,0 +1,40 @@
+name: 'Alarms notifcations dev'
+
+on:
+  push:
+    branches:
+      - 'dev'
+
+env:
+  TW_ACCOUNT_SID: ${{ secrets.TW_ACCOUNT_SID }}
+  TW_AUTH_TOKEN: ${{ secrets.TW_AUTH_TOKEN }}
+  PY_CODE_PATH: 'source'
+  JS_CODE_PATH: 'source/alarm_func.js'
+  TW_URL: 'https://serverless.twilio.com/v1/Services'
+  TW_CODE_URL: 'https://serverless-upload.twilio.com/v1/Services'
+
+jobs:
+  # Below job was added after the function app was created
+  code_deploy:
+    name: '[Github-workflow]Generate SDWAN config'
+    runs-on: self-hosted
+    # runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout repository'
+        uses: actions/checkout@v5
+
+      - name: 'Python: Install'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          architecture: 'x64'
+
+      - name: 'Python: Install dependencies'
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r ${{ env.PY_CODE_PATH }}/requirements.txt
+
+      - name: 'Python: Deploy code to Twilio'
+        run: |
+          python ${{ env.PY_CODE_PATH }}/twilio_mgmt.py ${{ secrets.TW_ACCOUNT_SID }} ${{ secrets.TW_AUTH_TOKEN }} ${{ env.TW_URL }}
+

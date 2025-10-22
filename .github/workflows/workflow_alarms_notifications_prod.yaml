@@ -1,0 +1,17 @@
+name: 'Alarms notifcations prod'
+
+on:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  deploy_prod:
+    name: 'Alarms notifications solution deployment'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout repository'
+        uses: actions/checkout@v5
+
+      - name: Main branch - Prod info
+        run: echo "Lack of resources to build PROD environment..."
