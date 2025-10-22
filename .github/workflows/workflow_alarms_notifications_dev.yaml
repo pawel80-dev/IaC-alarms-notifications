@@ -36,5 +36,5 @@ jobs:
 
       - name: 'Python: Deploy code to Twilio'
         run: |
-          python ${{ env.PY_CODE_PATH }}/twilio_mgmt.py ${{ secrets.TW_ACCOUNT_SID }} ${{ secrets.TW_AUTH_TOKEN }} ${{ env.TW_URL }}
+          python ${{ env.PY_CODE_PATH }}/twilio_app.py ${{ secrets.TW_ACCOUNT_SID }} ${{ secrets.TW_AUTH_TOKEN }} ${{ env.TW_URL }}
 
