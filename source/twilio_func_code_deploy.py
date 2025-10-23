@@ -9,7 +9,7 @@ parser.add_argument("auth_token", type=str, help="Twilio authentication token")
 parser.add_argument("service_sid", type=str, help="Twilio service SID")
 parser.add_argument("func_sid", type=str, help="Twilio function SID")
 parser.add_argument("env_sid", type=str, help="Twilio environment SID")
-# parser.add_argument("build_sid", type=str, help="Twilio build SID")
+parser.add_argument("code_location", type=str, help="Twilio Node.JS code path")
 args = parser.parse_args()
 
 

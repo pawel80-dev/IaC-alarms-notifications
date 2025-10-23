@@ -37,7 +37,7 @@ env:
   TW_ENV_SID: 'ZE0568be8824050905a06747614a151c83'
   # TW_BUILD_SID: 'ZB0352177a56dad51b3b19f4f0914eb519'
   PY_CODE_PATH: 'source'
-  JS_CODE_PATH: 'source/alarm_func.js'
+  NODE_JS_CODE_PATH: 'source/alarm_func.js'
   TW_URL: 'https://serverless.twilio.com/v1/Services'
   TW_CODE_URL: 'https://serverless-upload.twilio.com/v1/Services'
 
@@ -90,6 +90,7 @@ jobs:
                  ${{ env.TW_SERVICE_SID }} \
                  ${{ env.TW_FUNC_SID }} \
                  ${{ env.TW_ENV_SID }} \
+                 ${{ env.NODE_JS_CODE_PATH }}
 
       - name: 'Twilio: Add environment variables'
         if: >-
