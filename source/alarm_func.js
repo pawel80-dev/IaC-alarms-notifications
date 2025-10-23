@@ -1,9 +1,9 @@
-exports.handler = async function(context, event, callback) {
+exports.handler = function(context, event, callback) {
 
   const notifications = true;
-  const response = new Twilio.Response();
   const authUser = context.MANAGER_WEBHOOK_USER;
   const authPass = context.MANAGER_WEBHOOK_PASS;
+  const response = new Twilio.Response();
   const authHeader = event.request.headers.authorization;
 
   if (!authHeader) {
@@ -12,7 +12,7 @@ exports.handler = async function(context, event, callback) {
 
   const [authType, credentials] = authHeader.split(' ');
 
-  if (authType.toLowerCase() !== 'Basic') {
+  if (authType.toLowerCase() !== 'basic') {
     return callback(null, setUnauthorized(response));
   }
 
