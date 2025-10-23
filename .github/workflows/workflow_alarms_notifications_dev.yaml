@@ -32,6 +32,8 @@ on:
 env:
   TW_ACCOUNT_SID: ${{ secrets.TW_ACCOUNT_SID }}
   TW_AUTH_TOKEN: ${{ secrets.TW_AUTH_TOKEN }}
+  TW_SERVICE_SID: 'ZS66a86c95d72784c0839cc8bdb2e24d6c'
+  TW_ENV_SID: 'ZE0568be8824050905a06747614a151c83'
   PY_CODE_PATH: 'source'
   JS_CODE_PATH: 'source/alarm_func.js'
   TW_URL: 'https://serverless.twilio.com/v1/Services'
@@ -66,11 +68,24 @@ jobs:
   tw_function_actions:
     name: 'Twilio action'
     # always() - this job will run no matter what was the status of the dependency job
-    if: ${{ always() && github.event_name == 'workflow_dispatch' }}
+    if: >
+      ${{ 
+        always() && github.event_name == 'workflow_dispatch' &&
+        github.event.inputs.var_key != '' && github.event.inputs.var_key != 'None' 
+      }}
     needs: [code_deploy]
     runs-on: self-hosted
     # runs-on: ubuntu-latest
     steps:
-      - name: 'Checkout repository'
-        uses: actions/checkout@v5
+      - name: 'Twilio: Add environment variables'
+        run: |
+          python ${{ env.PY_CODE_PATH }}/twilio_env_var.py \
+                 ${{ env.TW_URL }} \
+                 ${{ secrets.TW_ACCOUNT_SID }} \
+                 ${{ secrets.TW_AUTH_TOKEN }} \
+                 ${{ env.TW_SERVICE_SID }} \
+                 ${{ env.TW_ENV_SID }} \
+                 ${{ github.event.inputs.var_key }} \
+                 ${{ github.event.inputs.var_value }}
+
 
