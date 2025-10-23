@@ -34,6 +34,7 @@ env:
   TW_AUTH_TOKEN: ${{ secrets.TW_AUTH_TOKEN }}
   TW_SERVICE_SID: 'ZS66a86c95d72784c0839cc8bdb2e24d6c'
   TW_ENV_SID: 'ZE0568be8824050905a06747614a151c83'
+  TW_BUILD_SID: 'ZB0352177a56dad51b3b19f4f0914eb519'
   PY_CODE_PATH: 'source'
   JS_CODE_PATH: 'source/alarm_func.js'
   TW_URL: 'https://serverless.twilio.com/v1/Services'
@@ -41,8 +42,8 @@ env:
 
 jobs:
   # Below job was added after the function app was created
-  code_deploy:
-    name: 'Twilio code upload'
+  twilio_function:
+    name: 'Twilio Function'
     # if: ${{ github.event_name != 'workflow_dispatch' }}
     runs-on: self-hosted
     # runs-on: ubuntu-latest
@@ -61,15 +62,30 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r ${{ env.PY_CODE_PATH }}/requirements.txt
 
-      - name: 'Python: Deploy code to Twilio'
+      # - name: 'Python: Deploy code to Twilio'
+      #   run: |
+      #     python ${{ env.PY_CODE_PATH }}/twilio_app.py ${{ env.TW_URL }} ${{ secrets.TW_ACCOUNT_SID }} ${{ secrets.TW_AUTH_TOKEN }}
+
+      - name: 'Twilio: Function build deploy'
+        # if: >-
+        #   ${{
+        #     github.event_name == 'workflow_dispatch' &&
+        #     github.event.inputs.var_key != '' && github.event.inputs.var_key != 'None' &&
+        #     github.event.inputs.var_value != '' && github.event.inputs.var_value != 'None'
+        #   }}
         run: |
-          python ${{ env.PY_CODE_PATH }}/twilio_app.py ${{ env.TW_URL }} ${{ secrets.TW_ACCOUNT_SID }} ${{ secrets.TW_AUTH_TOKEN }}
+          python ${{ env.PY_CODE_PATH }}/twilio_func_build_deploy.py \
+                 ${{ env.TW_URL }} \
+                 ${{ secrets.TW_ACCOUNT_SID }} \
+                 ${{ secrets.TW_AUTH_TOKEN }} \
+                 ${{ env.TW_SERVICE_SID }} \
+                 ${{ env.TW_ENV_SID }} \
+                 ${{ env.TW_BUILD_SID }}
 
       - name: 'Twilio: Add environment variables'
-        # if: ${{ github.event_name == 'workflow_dispatch' }}
         if: >-
           ${{
-            github.event_name == 'workflow_dispatch' &&
+            github.event_name == 'workflow_dispatch' && github.event.inputs.action_type == 'Variable-add-update' &&
             github.event.inputs.var_key != '' && github.event.inputs.var_key != 'None' &&
             github.event.inputs.var_value != '' && github.event.inputs.var_value != 'None'
           }}
@@ -81,4 +97,4 @@ jobs:
                  ${{ env.TW_SERVICE_SID }} \
                  ${{ env.TW_ENV_SID }} \
                  ${{ github.event.inputs.var_key }} \
-                #  ${{ github.event.inputs.var_value }}
+                 ${{ github.event.inputs.var_value }}
