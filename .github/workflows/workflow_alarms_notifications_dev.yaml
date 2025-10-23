@@ -68,8 +68,9 @@ jobs:
       - name: 'Twilio: Add environment variables'
         if: >
           ${{
-            always() && github.event_name == 'workflow_dispatch' &&
-            github.event.inputs.var_key != '' && github.event.inputs.var_key != 'None'
+            github.event_name == 'workflow_dispatch' &&
+            github.event.inputs.var_key != '' && github.event.inputs.var_key != 'None' &&
+            github.event.inputs.var_value != '' && github.event.inputs.var_value != 'None'
           }}
         run: |
           python ${{ env.PY_CODE_PATH }}/twilio_env_var.py \
