@@ -23,7 +23,7 @@ exports.handler = async function(context, event, callback) {
   }
 
   // Data model
-  const alarmType = event.alarmType;
+  const alarmType = event.alarmtype;
   const alarmMessage = event.message;
   const hostName = event.values[0]['host-name'];
   const ifName = event.values[0]['if-name'] || '';
