@@ -16,7 +16,7 @@ on:
         options:
           - Action1
           - Action2
-          - Action3
+          - Function-code-deploy
           - Variable-add-update
       var_key:
         description: 'Key:'
@@ -33,8 +33,9 @@ env:
   TW_ACCOUNT_SID: ${{ secrets.TW_ACCOUNT_SID }}
   TW_AUTH_TOKEN: ${{ secrets.TW_AUTH_TOKEN }}
   TW_SERVICE_SID: 'ZS66a86c95d72784c0839cc8bdb2e24d6c'
+  TW_FUNC_SID: 'ZH2219f158a5d93e5b0693d446a0c41424'
   TW_ENV_SID: 'ZE0568be8824050905a06747614a151c83'
-  TW_BUILD_SID: 'ZB0352177a56dad51b3b19f4f0914eb519'
+  # TW_BUILD_SID: 'ZB0352177a56dad51b3b19f4f0914eb519'
   PY_CODE_PATH: 'source'
   JS_CODE_PATH: 'source/alarm_func.js'
   TW_URL: 'https://serverless.twilio.com/v1/Services'
@@ -62,25 +63,25 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r ${{ env.PY_CODE_PATH }}/requirements.txt
 
+      - name: 'Twilio: Display available service information'
+        run: |
+          python ${{ env.PY_CODE_PATH }}/twilio_app.py ${{ env.TW_URL }} ${{ secrets.TW_ACCOUNT_SID }} ${{ secrets.TW_AUTH_TOKEN }}
+
+
       # - name: 'Python: Deploy code to Twilio'
       #   run: |
       #     python ${{ env.PY_CODE_PATH }}/twilio_app.py ${{ env.TW_URL }} ${{ secrets.TW_ACCOUNT_SID }} ${{ secrets.TW_AUTH_TOKEN }}
 
       - name: 'Twilio: Function build deploy'
-        # if: >-
-        #   ${{
-        #     github.event_name == 'workflow_dispatch' &&
-        #     github.event.inputs.var_key != '' && github.event.inputs.var_key != 'None' &&
-        #     github.event.inputs.var_value != '' && github.event.inputs.var_value != 'None'
-        #   }}
+        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.action_type == 'Function-code-deploy' }}
         run: |
-          python ${{ env.PY_CODE_PATH }}/twilio_func_build_deploy.py \
+          python ${{ env.PY_CODE_PATH }}/twilio_func_code_deploy.py \
                  ${{ env.TW_URL }} \
                  ${{ secrets.TW_ACCOUNT_SID }} \
                  ${{ secrets.TW_AUTH_TOKEN }} \
                  ${{ env.TW_SERVICE_SID }} \
+                 ${{ env.TW_FUNC_SID }} \
                  ${{ env.TW_ENV_SID }} \
-                 ${{ env.TW_BUILD_SID }}
 
       - name: 'Twilio: Add environment variables'
         if: >-
