@@ -67,7 +67,7 @@ jobs:
 
       - name: 'Twilio: Add environment variables'
         # if: ${{ github.event_name == 'workflow_dispatch' }}
-        if: >
+        if: >-
           ${{
             github.event_name == 'workflow_dispatch' &&
             github.event.inputs.var_key != '' && github.event.inputs.var_key != 'None' &&
