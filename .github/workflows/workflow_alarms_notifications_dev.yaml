@@ -40,7 +40,7 @@ env:
 jobs:
   # Below job was added after the function app was created
   code_deploy:
-    name: '[Github-workflow]Generate SDWAN config'
+    name: 'Twilio code upload'
     if: ${{ github.event_name != 'workflow_dispatch' }}
     runs-on: self-hosted
     # runs-on: ubuntu-latest
@@ -64,7 +64,7 @@ jobs:
           python ${{ env.PY_CODE_PATH }}/twilio_app.py ${{ env.TW_URL }} ${{ secrets.TW_ACCOUNT_SID }} ${{ secrets.TW_AUTH_TOKEN }}
 
   tw_function_actions:
-    name: 'sdfa'
+    name: 'Twilio action'
     # always() - this job will run no matter what was the status of the dependency job
     if: ${{ always() && github.event_name == 'workflow_dispatch' }}
     needs: [code_deploy]
