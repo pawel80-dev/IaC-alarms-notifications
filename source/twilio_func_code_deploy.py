@@ -15,13 +15,13 @@ args = parser.parse_args()
 
 
 def main():
-    func_version_sid = tw_func_code_upload(args.code_url, args.account_sid, args.auth_token, 
-                                           args.service_sid, args.func_sid, args.code_location)
-    func_build_sid = tw_func_build(args.url, args.account_sid, args.auth_token, 
-                                   args.service_sid, func_version_sid)
+    # func_version_sid = tw_func_code_upload(args.code_url, args.account_sid, args.auth_token, 
+    #                                        args.service_sid, args.func_sid, args.code_location)
+    # func_build_sid = tw_func_build(args.url, args.account_sid, args.auth_token, 
+    #                                args.service_sid, func_version_sid)
     time.sleep(10)
     tw_func_build_deploy(args.url, args.account_sid, args.auth_token, 
-                         args.service_sid, args.env_sid, func_build_sid)
+                         args.service_sid, args.env_sid, "ZB316857164f02c189b838e1424b204e47")
 
 
 if __name__ == "__main__":
