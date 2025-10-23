@@ -19,7 +19,7 @@ def main():
                                            args.service_sid, args.func_sid, args.code_location)
     func_build_sid = tw_func_build(args.url, args.account_sid, args.auth_token, 
                                    args.service_sid, func_version_sid)
-    time.sleep(5)
+    time.sleep(10)
     tw_func_build_deploy(args.url, args.account_sid, args.auth_token, 
                          args.service_sid, args.env_sid, func_build_sid)
 
