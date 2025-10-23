@@ -5,6 +5,30 @@ on:
     branches:
       - 'dev'
 
+  # Workflow needs to be started manually
+  workflow_dispatch:
+    inputs:
+      action_type:
+        description: 'Config generator runtime env:'
+        required: true
+        default: 'Github-Workflow'
+        type: choice
+        options:
+          - Action1
+          - Action2
+          - Action3
+          - Variable-add-update
+      var_key:
+        description: 'Key:'
+        required: true
+        type: string
+        default: 'None'
+      var_value:
+        description: 'Value:'
+        required: true
+        type: string
+        default: 'None'
+
 env:
   TW_ACCOUNT_SID: ${{ secrets.TW_ACCOUNT_SID }}
   TW_AUTH_TOKEN: ${{ secrets.TW_AUTH_TOKEN }}
@@ -17,6 +41,7 @@ jobs:
   # Below job was added after the function app was created
   code_deploy:
     name: '[Github-workflow]Generate SDWAN config'
+    if: ${{ github.event_name != 'workflow_dispatch' }}
     runs-on: self-hosted
     # runs-on: ubuntu-latest
     steps:
@@ -37,4 +62,15 @@ jobs:
       - name: 'Python: Deploy code to Twilio'
         run: |
           python ${{ env.PY_CODE_PATH }}/twilio_app.py ${{ env.TW_URL }} ${{ secrets.TW_ACCOUNT_SID }} ${{ secrets.TW_AUTH_TOKEN }}
+
+  tw_function_actions:
+    name: 'sdfa'
+    # always() - this job will run no matter what was the status of the dependency job
+    if: ${{ always() && github.event_name == 'workflow_dispatch' }}
+    needs: [code_deploy]
+    runs-on: self-hosted
+    # runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout repository'
+        uses: actions/checkout@v5
 

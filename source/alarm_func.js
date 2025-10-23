@@ -1,7 +1,7 @@
 exports.handler = async function(context, event, callback) {
 
+  const notifications = true;
   const response = new Twilio.Response();
-
   const authUser = context.MANAGER_WEBHOOK_USER;
   const authPass = context.MANAGER_WEBHOOK_PASS;
   const authHeader = event.request.headers.authorization;
@@ -22,24 +22,42 @@ exports.handler = async function(context, event, callback) {
     return callback(null, setUnauthorized(response));
   }
 
-// LATEST VERSION 1.1
+  // Data model
+  const alarmType = event.alarmType;
+  const alarmMessage = event.message;
+  const hostName = event.values[0]['host-name'];
+  const ifName = event.values[0]['if-name'] || '';
+  const recipients = ['whatsapp:'+context.USER1]
+  let templateName;
+  let templateBody;
 
-//   // Set the recipient and sender numbers
-//   const to = event.to || '+15558675310'; // Replace with your test number or use event input
-//   const from = context.TWILIO_PHONE_NUMBER || '+15017122661'; // Set in your environment variables
+  // Only one alarm / one template for this demo repo
+  // Template are defined in Twilio
+  if (notifications && alarmType === 'intstatus') {
+    templateName = context.TEMP1;
+    templateBody = {
+      1: alarmMessage,
+      2: hostName,
+      3: ifName
+    }
+  }
 
-//   // Set the message body
-//   const body = event.body || 'Hello from Twilio Serverless Function!';
-
-//   try {
-//     // Send the SMS
-//     const message = await client.messages.create({ to, from, body });
-//     // Return the message SID as a response
-//     return callback(null, { status: 'success', sid: message.sid });
-//   } catch (error) {
-//     // Return the error if sending fails
-//     return callback(error);
-//   }
+  const client = context.getTwilioClient();
+  for (const user of recipients) {
+    client.messages
+    .create({
+      from: 'whatsapp:'+context.WAPP_NUM,
+      to: user,
+      body: '',
+      persistentAction: [],
+      provideFeedback: false,
+      forceDelivery: false,
+      contentSid: templateName,
+      contentVariables: JSON.stringify(templateBody)
+    })
+    .then(message => callback(null, message.sid))
+    .catch(error => callback(error));
+  };
 };
 
 function setUnauthorized(response) {
