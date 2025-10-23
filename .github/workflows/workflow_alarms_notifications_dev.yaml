@@ -16,7 +16,6 @@ on:
         options:
           - Action1
           - Action2
-          - Action3
           - Variable-add-update
       var_key:
         description: 'Key:'
