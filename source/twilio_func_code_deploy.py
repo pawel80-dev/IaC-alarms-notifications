@@ -1,5 +1,6 @@
 from twilio_api import tw_func_code_upload, tw_func_build, tw_func_build_deploy
 import argparse
+import time
 
 parser = argparse.ArgumentParser()
 parser.add_argument("url", type=str, help="Twilio API URL")
@@ -14,14 +15,13 @@ args = parser.parse_args()
 
 
 def main():
-    # func_version_sid = tw_func_code_upload(args.code_url, args.account_sid, args.auth_token, 
-    #                                        args.service_sid, args.func_sid, args.code_location)
-    # func_build_sid = tw_func_build(args.url, args.account_sid, args.auth_token, 
-    #                                args.service_sid, func_version_sid)
-    
-    # ADD SLEEP 5!
+    func_version_sid = tw_func_code_upload(args.code_url, args.account_sid, args.auth_token, 
+                                           args.service_sid, args.func_sid, args.code_location)
+    func_build_sid = tw_func_build(args.url, args.account_sid, args.auth_token, 
+                                   args.service_sid, func_version_sid)
+    time.sleep(5)
     tw_func_build_deploy(args.url, args.account_sid, args.auth_token, 
-                         args.service_sid, args.env_sid, "ZB69c48994abea19350daa56a78350bcff")
+                         args.service_sid, args.env_sid, func_build_sid)
 
 
 if __name__ == "__main__":
