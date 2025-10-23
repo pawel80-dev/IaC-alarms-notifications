@@ -11,7 +11,7 @@ on:
       action_type:
         description: 'Config generator runtime env:'
         required: true
-        default: 'Github-Workflow'
+        default: 'Action1'
         type: choice
         options:
           - Action1
