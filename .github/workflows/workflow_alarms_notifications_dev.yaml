@@ -41,8 +41,15 @@ env:
   TW_URL: 'https://serverless.twilio.com/v1/Services'
   TW_CODE_URL: 'https://serverless-upload.twilio.com/v1/Services'
 
+##################### Twilio Function Deployment Steps: #####################
+# 1. Create a service
+# 2. Create a Function
+# 3. Create environment variables (if needed and if they already do not exist)
+# 4. Upload (update) your function code as a new Function Version
+# 5. Create a new Build that includes your Function Version
+# 6. Deploy the Build to your desired Environment
+
 jobs:
-  # Below job was added after the function app was created
   twilio_function:
     name: 'Twilio Function'
     # if: ${{ github.event_name != 'workflow_dispatch' }}
@@ -77,6 +84,7 @@ jobs:
         run: |
           python ${{ env.PY_CODE_PATH }}/twilio_func_code_deploy.py \
                  ${{ env.TW_URL }} \
+                 ${{ env.TW_CODE_URL }} \
                  ${{ secrets.TW_ACCOUNT_SID }} \
                  ${{ secrets.TW_AUTH_TOKEN }} \
                  ${{ env.TW_SERVICE_SID }} \

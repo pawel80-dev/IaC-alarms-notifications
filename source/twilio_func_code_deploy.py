@@ -3,6 +3,7 @@ import argparse
 
 parser = argparse.ArgumentParser()
 parser.add_argument("url", type=str, help="Twilio API URL")
+parser.add_argument("code_url", type=str, help="Twilio function code upload API URL")
 parser.add_argument("account_sid", type=str, help="Twilio account SID")
 parser.add_argument("auth_token", type=str, help="Twilio authentication token")
 parser.add_argument("service_sid", type=str, help="Twilio service SID")
