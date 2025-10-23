@@ -248,7 +248,7 @@ def tw_func_build_deploy(tw_url: str, acc_id: str, token: str, srv_id: str, env_
 
         response.raise_for_status()
         logger.info("Function build deployed successfully!")
-        logger.info(f'Function deploy SID: {response.json()["sid"]}')
+        logger.info(f'Function build deploy SID: {response.json()["sid"]}')
         return response.json()["sid"]
     # except requests.exceptions.HTTPError as err:
     except Exception:
