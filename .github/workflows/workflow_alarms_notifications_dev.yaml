@@ -16,17 +16,18 @@ on:
         options:
           - Action1
           - Action2
+          - Action3
           - Variable-add-update
-      # var_key:
-      #   description: 'Key:'
-      #   required: true
-      #   type: string
-      #   default: 'None'
-      # var_value:
-      #   description: 'Value:'
-      #   required: true
-      #   type: string
-      #   default: 'None'
+      var_key:
+        description: 'Key:'
+        required: true
+        type: string
+        default: 'None'
+      var_value:
+        description: 'Value:'
+        required: true
+        type: string
+        default: 'None'
 
 env:
   TW_ACCOUNT_SID: ${{ secrets.TW_ACCOUNT_SID }}
