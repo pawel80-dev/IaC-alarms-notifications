@@ -43,7 +43,7 @@ jobs:
   # Below job was added after the function app was created
   code_deploy:
     name: 'Twilio code upload'
-    if: ${{ github.event_name != 'workflow_dispatch' }}
+    # if: ${{ github.event_name != 'workflow_dispatch' }}
     runs-on: self-hosted
     # runs-on: ubuntu-latest
     steps:
@@ -65,27 +65,43 @@ jobs:
         run: |
           python ${{ env.PY_CODE_PATH }}/twilio_app.py ${{ env.TW_URL }} ${{ secrets.TW_ACCOUNT_SID }} ${{ secrets.TW_AUTH_TOKEN }}
 
-  tw_function_actions:
-    name: 'Twilio action'
-    # always() - this job will run no matter what was the status of the dependency job
-    if: >
-      ${{
-        always() && github.event_name == 'workflow_dispatch' &&
-        github.event.inputs.var_key != '' && github.event.inputs.var_key != 'None'
-      }}
-    needs: [code_deploy]
-    runs-on: self-hosted
-    # runs-on: ubuntu-latest
-    steps:
       - name: 'Twilio: Add environment variables'
-        run: >
-          python ${{ env.PY_CODE_PATH }}/twilio_env_var.py
+        if: >
+          ${{
+            always() && github.event_name == 'workflow_dispatch' &&
+            github.event.inputs.var_key != '' && github.event.inputs.var_key != 'None'
+          }}
+        run: |
+          python ${{ env.PY_CODE_PATH }}/twilio_env_var.py \
                  ${{ env.TW_URL }} \
-                 ${{ secrets.TW_ACCOUNT_SID }}
-                 ${{ secrets.TW_AUTH_TOKEN }}
-                 ${{ env.TW_SERVICE_SID }}
-                 ${{ env.TW_ENV_SID }}
-                 ${{ github.event.inputs.var_key }}
+                 ${{ secrets.TW_ACCOUNT_SID }} \
+                 ${{ secrets.TW_AUTH_TOKEN }} \
+                 ${{ env.TW_SERVICE_SID }} \
+                 ${{ env.TW_ENV_SID }} \
+                 ${{ github.event.inputs.var_key }} \
                  ${{ github.event.inputs.var_value }}
+
+  # tw_function_actions:
+  #   name: 'Twilio action'
+  #   # always() - this job will run no matter what was the status of the dependency job
+  #   if: >
+  #     ${{
+  #       always() && github.event_name == 'workflow_dispatch' &&
+  #       github.event.inputs.var_key != '' && github.event.inputs.var_key != 'None'
+  #     }}
+  #   needs: [code_deploy]
+  #   runs-on: self-hosted
+  #   # runs-on: ubuntu-latest
+  #   steps:
+  #     - name: 'Twilio: Add environment variables'
+  #       run: >
+  #         python ${{ env.PY_CODE_PATH }}/twilio_env_var.py
+  #                ${{ env.TW_URL }} \
+  #                ${{ secrets.TW_ACCOUNT_SID }}
+  #                ${{ secrets.TW_AUTH_TOKEN }}
+  #                ${{ env.TW_SERVICE_SID }}
+  #                ${{ env.TW_ENV_SID }}
+  #                ${{ github.event.inputs.var_key }}
+  #                ${{ github.event.inputs.var_value }}
 
 
