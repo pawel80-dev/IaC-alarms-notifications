@@ -14,7 +14,7 @@ on:
         default: 'Action1'
         type: choice
         options:
-          - Action1
+          - Display-services-data
           - Action2
           - Function-code-deploy
           - Variable-add-update
@@ -70,10 +70,13 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r ${{ env.PY_CODE_PATH }}/requirements.txt
 
-      - name: 'Twilio: Display available service information'
+      - name: 'Twilio: Display available services information'
+        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.action_type == 'Display-services-data' }}
         run: |
-          python ${{ env.PY_CODE_PATH }}/twilio_app.py ${{ env.TW_URL }} ${{ secrets.TW_ACCOUNT_SID }} ${{ secrets.TW_AUTH_TOKEN }}
-
+          python ${{ env.PY_CODE_PATH }}/twilio_service_data.py \
+                 ${{ env.TW_URL }} \
+                 ${{ secrets.TW_ACCOUNT_SID }} \
+                 ${{ secrets.TW_AUTH_TOKEN }}
 
       # - name: 'Python: Deploy code to Twilio'
       #   run: |
