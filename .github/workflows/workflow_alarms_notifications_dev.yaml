@@ -17,6 +17,7 @@ on:
           - Display-services-data
           - Function-code-deploy
           - Variable-add-update
+          - Add-service
           - Remove-the-service
       service_sid:
         description: 'Service_SID:'
