@@ -11,13 +11,18 @@ on:
       action_type:
         description: 'Config generator runtime env:'
         required: true
-        default: 'Action1'
+        default: 'Display-services-data'
         type: choice
         options:
           - Display-services-data
-          - Action2
           - Function-code-deploy
           - Variable-add-update
+          - Remove-the-service
+      service_sid:
+        description: 'Service_SID:'
+        required: true
+        type: string
+        default: 'None'
       var_key:
         description: 'Key:'
         required: true
@@ -71,16 +76,12 @@ jobs:
           python -m pip install -r ${{ env.PY_CODE_PATH }}/requirements.txt
 
       - name: 'Twilio: Display available services information'
-        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.action_type == 'Display-services-data' }}
+        if: ${{ github.event.inputs.action_type == 'Display-services-data' }}
         run: |
           python ${{ env.PY_CODE_PATH }}/twilio_service_data.py \
                  ${{ env.TW_URL }} \
                  ${{ secrets.TW_ACCOUNT_SID }} \
                  ${{ secrets.TW_AUTH_TOKEN }}
-
-      # - name: 'Python: Deploy code to Twilio'
-      #   run: |
-      #     python ${{ env.PY_CODE_PATH }}/twilio_app.py ${{ env.TW_URL }} ${{ secrets.TW_ACCOUNT_SID }} ${{ secrets.TW_AUTH_TOKEN }}
 
       - name: 'Twilio: Function build deploy'
         if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.action_type == 'Function-code-deploy' }}
@@ -111,3 +112,12 @@ jobs:
                  ${{ env.TW_ENV_SID }} \
                  ${{ github.event.inputs.var_key }} \
                  ${{ github.event.inputs.var_value }}
+
+      - name: 'Twilio: Service remove'
+        if: ${{ github.event.inputs.action_type == 'Remove-the-service' }}
+        run: |
+          python ${{ env.PY_CODE_PATH }}/twilio_service_remove.py \
+                 ${{ env.TW_URL }} \
+                 ${{ secrets.TW_ACCOUNT_SID }} \
+                 ${{ secrets.TW_AUTH_TOKEN }} \
+                 ${{ github.event.inputs.service_sid }}
