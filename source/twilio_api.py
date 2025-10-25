@@ -26,7 +26,8 @@ def tw_service_list(tw_url: str, acc_id: str, token: str) -> None:
         # logger.info(json.dumps(response.json(), indent=4))
         for service in response.json()["services"]:
             # logger.info(f'Service SID: {service["sid"]}, Service name: {service["friendly_name"]}')
-            all_services.append({"sid": service["sid"], "name": service["friendly_name"]})
+            all_services.append({"sid": service["sid"], "domain": service["domain_base"],
+                                 "u_name": service["unique_name"], "f_name": service["friendly_name"]})
         return all_services
     else:
         logger.info("Failed to retrieve service list:", response.status_code)
