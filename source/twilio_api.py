@@ -14,7 +14,8 @@ logging.basicConfig(level=logging.INFO)
 
 ############################# Twilio Services #############################
 def tw_service_list(tw_url: str, acc_id: str, token: str) -> None:
-    logger.info("Twilio Service Listing...")
+    # logger.info("Twilio Service Listing...")
+    all_services = []
 
     response = requests.get(
         url=tw_url, 
@@ -25,7 +26,8 @@ def tw_service_list(tw_url: str, acc_id: str, token: str) -> None:
         # logger.info(json.dumps(response.json(), indent=4))
         for service in response.json()["services"]:
             # logger.info(f'Service SID: {service["sid"]}, Service name: {service["friendly_name"]}')
-            logger.info(f'Service SID: {service["sid"]}, Service name: {service["friendly_name"]}')
+            all_services.append({"sid": service["sid"], "name": service["friendly_name"]})
+        return all_services
     else:
         logger.info("Failed to retrieve service list:", response.status_code)
         logger.info(response.text)
@@ -135,7 +137,8 @@ def tw_func_delete(tw_url: str, acc_id: str, token: str, srv_id: str, func_id: s
 def tw_func_list(tw_url: str, acc_id: str, token: str, srv_id: str) -> None:
     api = f"/{srv_id}/Functions"
     url = tw_url + api
-    logger.info("Twilio Function list within a service...")
+    # logger.info("Twilio Function list within a service...")
+    all_functions = []
 
     response = requests.get(
         url=url,
@@ -143,11 +146,12 @@ def tw_func_list(tw_url: str, acc_id: str, token: str, srv_id: str) -> None:
     )
 
     if response.status_code == 200:
-        logger.info("Function list successfully retrieved!")
+        # logger.info("Function list successfully retrieved!")
         for func in response.json()["functions"]:
-            logger.info(f'Function SID: {func["sid"]}, Function name: {func["friendly_name"]}')
+            # logger.info(f'Function SID: {func["sid"]}, Function name: {func["friendly_name"]}')
+            all_functions.append({"sid": func["sid"], "name": func["friendly_name"]})
         # logger.info(json.dumps(response.json(), indent=4))
-        # return json.dumps(response.json(), indent=4)
+        return all_functions
     else:
         logger.info("Failed to create function:", response.status_code)
         logger.info(response.text)
@@ -260,7 +264,8 @@ def tw_func_build_deploy(tw_url: str, acc_id: str, token: str, srv_id: str, env_
 def tw_func_env_sids_list(tw_url: str, acc_id: str, token: str, srv_id: str) -> None:
     api = f"/{srv_id}/Environments"
     url = tw_url + api
-    logger.info("Twilio Environment SIDs list...")
+    # logger.info("Twilio Environment SIDs list...")
+    env_sid_list = []
 
     response = requests.get(
         url=url,
@@ -268,11 +273,13 @@ def tw_func_env_sids_list(tw_url: str, acc_id: str, token: str, srv_id: str) -> 
     )
 
     if response.status_code == 200:
-        logger.info("Environment SIDs successfully retrieved!")
+        # logger.info("Environment SIDs successfully retrieved!")
         #logger.info(json.dumps(response.json(), indent=4))
         # return response.json()["sid"]
         for env in response.json()["environments"]:
-            logger.info(f'Environment SID: {env["sid"]}')
+            # logger.info(f'Environment SID: {env["sid"]}')
+            env_sid_list.append(env["sid"])
+        return env_sid_list
     else:
         logger.info("Failed to read environment SIDs:", response.status_code)
         logger.info(response.text)
