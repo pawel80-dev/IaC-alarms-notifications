@@ -16,8 +16,7 @@ def main():
     services_list = tw_service_list(args.url, args.account_sid, args.auth_token)
     if services_list:
         for service in services_list:
-            print(f"Service_SID: {service["sid"]}, Service_unique_name: {service["u_name"]}, \
-                  Domain: {service["domain"]}.twil.io")
+            print(f"Service_SID: {service["sid"]}, Service_unique_name: {service["u_name"]}, Domain: {service["domain"]}.twil.io")
             func_list = tw_func_list(args.url, args.account_sid, args.auth_token, service["sid"])
             for func in func_list:
                 print(f"  Function_SID: {func["sid"]}, Function_name: {func["name"]}")

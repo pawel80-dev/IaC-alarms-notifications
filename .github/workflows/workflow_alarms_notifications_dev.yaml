@@ -95,7 +95,7 @@ jobs:
                  ${{ secrets.TW_AUTH_TOKEN }}
 
       - name: 'Twilio: Function build deploy'
-        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.action_type == 'Function-code-deploy' }}
+        if: ${{ github.event.inputs.action_type == 'Function-code-deploy' }}
         run: |
           python ${{ env.PY_CODE_PATH }}/twilio_func_code_deploy.py \
                  ${{ env.TW_URL }} \
@@ -110,7 +110,7 @@ jobs:
       - name: 'Twilio: Add environment variables'
         if: >-
           ${{
-            github.event_name == 'workflow_dispatch' && github.event.inputs.action_type == 'Variable-add-update' &&
+            github.event.inputs.action_type == 'Variable-add-update' &&
             github.event.inputs.var_key != '' && github.event.inputs.var_key != 'None' &&
             github.event.inputs.var_value != '' && github.event.inputs.var_value != 'None'
           }}
@@ -125,7 +125,7 @@ jobs:
                  ${{ github.event.inputs.var_value }}
 
       - name: 'Twilio: Add Service and Function'
-        if: ${{ github.event.inputs.action_type == 'Add-service' }}
+        if: ${{ github.event.inputs.action_type == 'Add-service' && github.event.inputs.service_name != '' && github.event.inputs.func_name != '' }}
         run: |
           python ${{ env.PY_CODE_PATH }}/twilio_service_add.py \
                  ${{ env.TW_URL }} \
