@@ -67,7 +67,7 @@ def tw_service_delete(tw_url: str, acc_id: str, token: str, srv_id: str) -> None
             auth=(acc_id, token)
         )
         response.raise_for_status()
-        logger.info("Service successfully deleted!")
+        logger.info(f"Service: {srv_id} successfully deleted!")
 
     except requests.exceptions.HTTPError as err:
         logger.error(err)
