@@ -13,7 +13,7 @@ logging.basicConfig(level=logging.INFO)
 
 
 ############################# Twilio Services #############################
-def tw_service_list(tw_url: str, acc_id: str, token: str) -> None:
+def tw_service_list(tw_url: str, acc_id: str, token: str) -> list:
     # logger.info("Twilio Service Listing...")
     all_services = []
 
@@ -284,6 +284,31 @@ def tw_func_env_sids_list(tw_url: str, acc_id: str, token: str, srv_id: str) -> 
     else:
         logger.info("Failed to read environment SIDs:", response.status_code)
         logger.info(response.text)
+
+
+def tw_func_create_env(tw_url: str, acc_id: str, token: str, srv_id: str) -> dict:
+    api = f"/{srv_id}/Environments"
+    url = tw_url + api
+    data = {
+        "UniqueName": "dev",      # Required: your environment name (e.g., 'dev', 'staging', 'prod')
+        "DomainSuffix": "dev"     # Optional: domain suffix for the environment
+    }
+    logger.info("Twilio Environment creation...")
+
+    try:
+        response = requests.post(
+            url=url,
+            data=data,
+            auth=(acc_id, token)
+        )
+        response.raise_for_status()
+        logger.info("Environment created successfully!")
+        logger.info(f"Environment SID: {response.json()["sid"]}, domain: {response.json()["domain_name"]}")
+        return {"sid": response.json()["sid"], "domain": response.json()["domain_name"]}
+
+    except Exception:
+        logger.error(response.text)
+        exit(1)
 
 
 def tw_func_create_env_var(tw_url: str, acc_id: str, token: str, srv_id: str, env_id: str, 

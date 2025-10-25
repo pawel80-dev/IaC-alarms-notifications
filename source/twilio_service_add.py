@@ -1,4 +1,4 @@
-from twilio_api import tw_service_create, tw_func_create
+from twilio_api import tw_service_create, tw_func_create, tw_func_create_env
 import argparse
 
 parser = argparse.ArgumentParser()
@@ -13,6 +13,7 @@ args = parser.parse_args()
 def main():
     service_sid = tw_service_create(args.url, args.account_sid, args.auth_token, args.service_name)
     tw_func_create(args.url, args.account_sid, args.auth_token, service_sid, args.func_name)
+    tw_func_create_env(args.url, args.account_sid, args.auth_token, service_sid)
 
 
 if __name__ == "__main__":

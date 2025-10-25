@@ -20,27 +20,27 @@ on:
           - Add-service
           - Remove-the-service
       service_sid:
-        description: 'Service_SID:'
+        description: 'Service SID:'
         required: false
         type: string
         default: ''
       service_name:
-        description: 'Service_Name:'
+        description: 'Service Name:'
         required: false
         type: string
         default: ''
       func_name:
-        description: 'Function_Name:'
+        description: 'Function Name:'
         required: false
         type: string
         default: ''
       var_key:
-        description: 'Key:'
+        description: 'Env Key:'
         required: false
         type: string
         default: ''
       var_value:
-        description: 'Value:'
+        description: 'Env Value:'
         required: false
         type: string
         default: ''
@@ -111,8 +111,8 @@ jobs:
         if: >-
           ${{
             github.event.inputs.action_type == 'Variable-add-update' &&
-            github.event.inputs.var_key != '' && github.event.inputs.var_key != 'None' &&
-            github.event.inputs.var_value != '' && github.event.inputs.var_value != 'None'
+            github.event.inputs.var_key != '' &&
+            github.event.inputs.var_value != ''
           }}
         run: |
           python ${{ env.PY_CODE_PATH }}/twilio_env_var.py \
