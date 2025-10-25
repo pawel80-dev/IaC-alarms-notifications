@@ -20,19 +20,19 @@ on:
           - Remove-the-service
       service_sid:
         description: 'Service_SID:'
-        required: true
+        required: false
         type: string
-        default: 'None'
+        default: ''
       var_key:
         description: 'Key:'
-        required: true
+        required: false
         type: string
-        default: 'None'
+        default: ''
       var_value:
         description: 'Value:'
-        required: true
+        required: false
         type: string
-        default: 'None'
+        default: ''
 
 env:
   TW_ACCOUNT_SID: ${{ secrets.TW_ACCOUNT_SID }}

@@ -70,8 +70,8 @@ def tw_service_delete(tw_url: str, acc_id: str, token: str, srv_id: str) -> None
         response.raise_for_status()
         logger.info(f"Service: {srv_id} successfully deleted!")
 
-    except requests.exceptions.HTTPError as err:
-        logger.error(err)
+    except Exception:
+        logger.error(response.text)
         exit(1)
 
 
