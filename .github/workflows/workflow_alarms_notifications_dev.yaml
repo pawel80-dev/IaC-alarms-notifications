@@ -34,6 +34,11 @@ on:
         required: false
         type: string
         default: ''
+      env_type:
+        description: 'Environment:'
+        required: false
+        type: string
+        default: ''
       var_key:
         description: 'Env Key:'
         required: false
@@ -125,14 +130,21 @@ jobs:
                  ${{ github.event.inputs.var_value }}
 
       - name: 'Twilio: Add Service and Function'
-        if: ${{ github.event.inputs.action_type == 'Add-service' && github.event.inputs.service_name != '' && github.event.inputs.func_name != '' }}
+        if: >-
+          ${{
+            github.event.inputs.action_type == 'Add-service' &&
+            github.event.inputs.service_name != '' &&
+            github.event.inputs.func_name != '' &&
+            github.event.inputs.env_type != ''
+          }}
         run: |
           python ${{ env.PY_CODE_PATH }}/twilio_service_add.py \
                  ${{ env.TW_URL }} \
                  ${{ secrets.TW_ACCOUNT_SID }} \
                  ${{ secrets.TW_AUTH_TOKEN }} \
                  ${{ github.event.inputs.service_name }} \
-                 ${{ github.event.inputs.func_name }}
+                 ${{ github.event.inputs.func_name }} \
+                 ${{ github.event.inputs.env_type }}
 
       - name: 'Twilio: Service remove'
         if: ${{ github.event.inputs.action_type == 'Remove-the-service' && github.event.inputs.service_sid != '' }}

@@ -286,12 +286,12 @@ def tw_func_env_sids_list(tw_url: str, acc_id: str, token: str, srv_id: str) -> 
         logger.info(response.text)
 
 
-def tw_func_create_env(tw_url: str, acc_id: str, token: str, srv_id: str) -> dict:
+def tw_func_create_env(tw_url: str, acc_id: str, token: str, srv_id: str, env_type: str) -> dict:
     api = f"/{srv_id}/Environments"
     url = tw_url + api
     data = {
-        "UniqueName": "dev",      # Required: your environment name (e.g., 'dev', 'staging', 'prod')
-        "DomainSuffix": "dev"     # Optional: domain suffix for the environment
+        "UniqueName": env_type,     # Required: your environment name (e.g., 'dev', 'staging', 'prod')
+        "DomainSuffix": env_type    # Optional: domain suffix for the environment
     }
     logger.info("Twilio Environment creation...")
 
