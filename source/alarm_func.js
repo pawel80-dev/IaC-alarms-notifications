@@ -6,6 +6,8 @@ exports.handler = function(context, event, callback) {
   const response = new Twilio.Response();
   const authHeader = event.request.headers.authorization;
 
+  // Auth verification
+
   if (!authHeader) {
     return callback(null, setUnauthorized(response));
   }

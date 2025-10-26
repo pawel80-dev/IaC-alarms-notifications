@@ -63,10 +63,6 @@ on:
 env:
   TW_ACCOUNT_SID: ${{ secrets.TW_ACCOUNT_SID }}
   TW_AUTH_TOKEN: ${{ secrets.TW_AUTH_TOKEN }}
-  TW_SERVICE_SID: 'ZS66a86c95d72784c0839cc8bdb2e24d6c'
-  TW_FUNC_SID: 'ZH2219f158a5d93e5b0693d446a0c41424'
-  TW_ENV_SID: 'ZE0568be8824050905a06747614a151c83'
-  # TW_BUILD_SID: 'ZB729a470ae6ff5ec4c72334197bcf4c4c'
   PY_CODE_PATH: 'source'
   NODE_JS_CODE_PATH: 'source/alarm_func.js'
   TW_URL: 'https://serverless.twilio.com/v1/Services'
