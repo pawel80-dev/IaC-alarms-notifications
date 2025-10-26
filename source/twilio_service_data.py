@@ -22,7 +22,7 @@ def main():
                 print(f"  Function_SID: {func["sid"]}, Function_name: {func["name"]}")
             env_list = tw_func_env_sids_list(args.url, args.account_sid, args.auth_token, service["sid"])
             for env in env_list:
-                print(f"  Environment_SID: {env}")
+                print(f"  Environment_SID: {env["sid"]}, Environment_domain: {env["domain"]}")
     else:
         logger.info("There are no active services.")
         exit(1)

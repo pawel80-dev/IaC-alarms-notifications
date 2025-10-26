@@ -279,7 +279,7 @@ def tw_func_env_sids_list(tw_url: str, acc_id: str, token: str, srv_id: str) -> 
         # return response.json()["sid"]
         for env in response.json()["environments"]:
             # logger.info(f'Environment SID: {env["sid"]}')
-            env_sid_list.append(env["sid"])
+            env_sid_list.append({"sid": env["sid"], "domain": env["domain_name"]})
         return env_sid_list
     else:
         logger.info("Failed to read environment SIDs:", response.status_code)
