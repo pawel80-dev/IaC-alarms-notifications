@@ -365,7 +365,8 @@ def tw_func_update_env_var(tw_url: str, acc_id: str, token: str, srv_id: str, en
 def tw_func_env_vars_list(tw_url: str, acc_id: str, token: str, srv_id: str, env_id: str) -> None:
     api = f"/{srv_id}/Environments/{env_id}/Variables"
     url = tw_url + api
-    logger.info("Twilio Environment variables list...")
+    # logger.info("Twilio Environment variables list...")
+    all_vars = []
 
     response = requests.get(
         url=url,
@@ -373,11 +374,12 @@ def tw_func_env_vars_list(tw_url: str, acc_id: str, token: str, srv_id: str, env
     )
 
     if response.status_code == 200:
-        logger.info("Environment variable list successfully created!")
+        # logger.info("Environment variable list successfully created!")
         # logger.info(json.dumps(response.json(), indent=4))
-        # return response.json()["sid"]
         for var in response.json()["variables"]:
-            logger.info(f'Environment var name: {var["key"]}, Environment var SID: {var["sid"]}')
+            # logger.info(f'Environment var name: {var["key"]}, Environment var SID: {var["sid"]}')
+            all_vars.append({"sid": var["sid"], "name": var["key"]})
+        return all_vars
     else:
         logger.info("Failed to create environment variable list:", response.status_code)
         logger.info(response.text)

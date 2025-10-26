@@ -1,4 +1,4 @@
-from twilio_api import tw_service_list, tw_func_list, tw_func_env_sids_list
+from twilio_api import tw_service_list, tw_func_list, tw_func_env_sids_list, tw_func_env_vars_list
 import argparse
 import logging
 
@@ -23,6 +23,9 @@ def main():
             env_list = tw_func_env_sids_list(args.url, args.account_sid, args.auth_token, service["sid"])
             for env in env_list:
                 print(f"  Environment_SID: {env["sid"]}, Environment_domain: {env["domain"]}")
+                var_list = tw_func_env_vars_list(args.url, args.account_sid, args.auth_token, service["sid"], env["sid"])
+                for var in var_list:
+                    print(f"    Variable_SID: {var["sid"]}, Variable_name: {var["name"]}")
     else:
         logger.info("There are no active services.")
         exit(1)
