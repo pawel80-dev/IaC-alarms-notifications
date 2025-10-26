@@ -65,10 +65,11 @@ env:
 ##################### Twilio Function Deployment Steps: #####################
 # 1. Create a service
 # 2. Create a Function
-# 3. Create environment variables (if needed and if they already do not exist)
-# 4. Upload (update) your function code as a new Function Version
-# 5. Create a new Build that includes your Function Version
-# 6. Deploy the Build to your desired Environment
+# 3. Create an environment (dev, prod, etc)
+# 4. Create environment variables (if needed and if they already do not exist)
+# 5. Upload (update) your function code as a new Function Version
+# 6. Create a new Build that includes your Function Version
+# 7. Deploy the Build to your desired Environment
 
 jobs:
   twilio_function:
