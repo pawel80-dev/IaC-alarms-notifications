@@ -118,9 +118,9 @@ jobs:
                  ${{ env.TW_CODE_URL }} \
                  ${{ secrets.TW_ACCOUNT_SID }} \
                  ${{ secrets.TW_AUTH_TOKEN }} \
-                 ${{ env.TW_SERVICE_SID }} \
-                 ${{ env.TW_FUNC_SID }} \
-                 ${{ env.TW_ENV_SID }} \
+                 ${{ github.event.inputs.service_sid }} \
+                 ${{ github.event.inputs.func_sid }} \
+                 ${{ github.event.inputs.env_sid }} \
                  ${{ env.NODE_JS_CODE_PATH }}
 
       - name: 'Twilio: Add environment variable'
