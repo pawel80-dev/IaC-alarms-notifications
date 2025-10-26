@@ -16,11 +16,21 @@ on:
         options:
           - Display-services-data
           - Function-code-deploy
-          - Variable-add-update
+          - Add-env-variable
           - Add-service
           - Remove-the-service
       service_sid:
         description: 'Service SID:'
+        required: false
+        type: string
+        default: ''
+      func_sid:
+        description: 'Function SID:'
+        required: false
+        type: string
+        default: ''
+      env_sid:
+        description: 'Environment SID:'
         required: false
         type: string
         default: ''
@@ -113,10 +123,12 @@ jobs:
                  ${{ env.TW_ENV_SID }} \
                  ${{ env.NODE_JS_CODE_PATH }}
 
-      - name: 'Twilio: Add environment variables'
+      - name: 'Twilio: Add environment variable'
         if: >-
           ${{
-            github.event.inputs.action_type == 'Variable-add-update' &&
+            github.event.inputs.action_type == 'Add-env-variable' &&
+            github.event.inputs.service_sid != '' &&
+            github.event.inputs.env_sid != '' &&
             github.event.inputs.var_key != '' &&
             github.event.inputs.var_value != ''
           }}
@@ -125,8 +137,8 @@ jobs:
                  ${{ env.TW_URL }} \
                  ${{ secrets.TW_ACCOUNT_SID }} \
                  ${{ secrets.TW_AUTH_TOKEN }} \
-                 ${{ env.TW_SERVICE_SID }} \
-                 ${{ env.TW_ENV_SID }} \
+                 ${{ github.event.inputs.service_sid }} \
+                 ${{ github.event.inputs.env_sid }} \
                  ${{ github.event.inputs.var_key }} \
                  ${{ github.event.inputs.var_value }}
 
