@@ -143,7 +143,7 @@ def alarm_notification(manager_url: str, jsession_id: str, manager_token: str) -
         "severity": "Medium",
         "alarmName": "BFD_Node_Up",
         "accountDetails": "noreply@cisco.com",
-        "webHookEnabled": true,
+        "webHookEnabled": True,
         "webhookUsername": "admin",
         "webhookPassword": "admin",
         "webhookUrl": "https://localhost:8444",
