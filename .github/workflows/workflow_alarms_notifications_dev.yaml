@@ -19,6 +19,7 @@ on:
           - Add-env-variable
           - Add-service
           - Remove-the-service
+          - Manager-configuration
       service_sid:
         description: 'Service SID:'
         required: false
@@ -67,6 +68,7 @@ env:
   NODE_JS_CODE_PATH: 'source/alarm_func.js'
   TW_URL: 'https://serverless.twilio.com/v1/Services'
   TW_CODE_URL: 'https://serverless-upload.twilio.com/v1/Services'
+
 
 ##################### Twilio Function Deployment Steps: #####################
 # 1. Create a service
@@ -163,3 +165,11 @@ jobs:
                  ${{ secrets.TW_ACCOUNT_SID }} \
                  ${{ secrets.TW_AUTH_TOKEN }} \
                  ${{ github.event.inputs.service_sid }}
+
+      - name: 'Manager: Connectivity test'
+        if: ${{ github.event.inputs.action_type == 'Manager-configuration' }}
+        run: |
+          python ${{ env.PY_CODE_PATH }}/manager_conn_test.py \
+                 ${{ secrets.C_MANAGER_URL }} \
+                #  ${{ secrets.C_MANAGER_LOGIN }} \
+                #  ${{ secrets.C_MANAGER_PASSWORD }}
