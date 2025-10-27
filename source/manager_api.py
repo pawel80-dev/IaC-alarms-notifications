@@ -131,7 +131,7 @@ def manager_bootstrap_gen(manager_url: str, jsession_id: str, manager_token: str
 
 
 def alarm_notification(manager_url: str, jsession_id: str, manager_token: str) -> None:
-    api = "/j_security_check"
+    api = "/notifications/rule"
     url = manager_url + api
     headers = {
         "Content-Type": "application/json",
