@@ -1,7 +1,6 @@
 import requests
 import logging
 import random
-import json
 from urllib3.exceptions import InsecureRequestWarning
 
 # Logging on the INFO level
@@ -78,56 +77,6 @@ def manager_logout(manager_url: str, jsession_id: str) -> None:
     else:
         logging.info("Manager logout - successful!")
         return None
-
-
-def manager_device_list(manager_url: str, jsession_id: str, manager_token: str) -> list:
-    api = "/dataservice/system/device/vedges"
-    url = manager_url + api
-    headers = {
-        "Content-Type": "application/json",
-        "Cookie": jsession_id,
-        "X-XSRF-TOKEN": manager_token
-    }
-    response = requests.get(url=url, headers=headers, verify=False)
-    if response.status_code != 200:
-        logging.info(f"Manager device list error code: {response.status_code} {response.text}")
-        return None
-    else:
-        logging.info("Manager device list - successful!")
-        # logging.info(f"Device list:\n {json.dumps(response.json()["data"], indent=4)}")
-        return response.json()["data"]
-
-
-def find_device(dev_list: list, hostname: str) -> str:
-    for device in dev_list:
-        if "configuredHostname" in device and device["configuredHostname"] == hostname:
-            logging.info(f"Device {hostname} was found, its UUID is: {device['uuid']} - successful!")
-            return device["uuid"]
-    logging.info(f"Device {hostname} - not found!")
-    return None
-
-
-# API:
-# Configuration - Device Inventory /system/device/bootstrap/device/{uuid}
-def manager_bootstrap_gen(manager_url: str, jsession_id: str, manager_token: str, uuid: str) -> None:
-    cfg_type = "cloudinit"
-    include_root_cert = "true"
-    # version = "v1"
-    # api = f"/dataservice/system/device/bootstrap/device/{uuid}?configtype={cfg_type}&inclDefRootCert={include_root_cert}&version={version}"
-    api = f"/dataservice/system/device/bootstrap/device/{uuid}?configtype={cfg_type}&inclDefRootCert={include_root_cert}"
-    url = manager_url + api
-    headers = {
-        "Content-Type": "application/json",
-        "Cookie": jsession_id,
-        "X-XSRF-TOKEN": manager_token
-    }
-    response = requests.get(url=url, headers=headers, verify=False)
-    if response.status_code != 200:
-        logging.info(f"Manager bootstrap generate error code: {response.status_code} {response.text}")
-        return None
-    else:
-        logging.info("Manager bootstrap generate - successful!")
-        return response.json()["bootstrapConfig"]
 
 
 def alarm_notification(manager_url: str, jsession_id: str, manager_token: str) -> None:

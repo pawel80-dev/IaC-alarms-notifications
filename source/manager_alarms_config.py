@@ -17,7 +17,7 @@ def main():
     # manager_connectivity_test(args.url)
     session_id = manager_jsession_id(args.url, args.username, args.password)
     token = manager_token(args.url, session_id)
-    alarm_notification(args.url, session_id, token)
+    # alarm_notification(args.url, session_id, token)
     manager_logout(args.url, session_id)
 
 
