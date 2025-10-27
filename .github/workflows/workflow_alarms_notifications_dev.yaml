@@ -169,7 +169,7 @@ jobs:
       - name: 'Manager: Connectivity test'
         if: ${{ github.event.inputs.action_type == 'Manager-configuration' }}
         run: |
-          python ${{ env.PY_CODE_PATH }}/manager_conn_test.py \
+          python ${{ env.PY_CODE_PATH }}/manager_alarms_config.py \
                  ${{ secrets.C_MANAGER_URL }} \
-                #  ${{ secrets.C_MANAGER_LOGIN }} \
-                #  ${{ secrets.C_MANAGER_PASSWORD }}
+                 ${{ secrets.C_MANAGER_LOGIN }} \
+                 ${{ secrets.C_MANAGER_PASSWORD }}

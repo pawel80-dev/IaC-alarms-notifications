@@ -130,6 +130,39 @@ def manager_bootstrap_gen(manager_url: str, jsession_id: str, manager_token: str
         return response.json()["bootstrapConfig"]
 
 
+def alarm_notification(manager_url: str, jsession_id: str, manager_token: str) -> None:
+    api = "/j_security_check"
+    url = manager_url + api
+    headers = {
+        "Content-Type": "application/json",
+        "Cookie": jsession_id,
+        "X-XSRF-TOKEN": manager_token
+    }
+    payload = {
+        "notificationRuleName": "testwebhook",
+        "severity": "Medium",
+        "alarmName": "BFD_Node_Up",
+        "accountDetails": "noreply@cisco.com",
+        "webHookEnabled": true,
+        "webhookUsername": "admin",
+        "webhookPassword": "admin",
+        "webhookUrl": "https://localhost:8444",
+        "updatedBy": "admin",
+        "devicesAttached": "1712133e-0246-4281-8152-3317b796d2bc",
+        "emailThreshold": 5,
+        "accountDetailsArray": [
+          "noreply@cisco.com"
+        ]
+    }
+    response = requests.post(url=url, headers=headers, data=payload, verify=False)
+    if response.status_code != 202:
+        logging.info(f"Manager alarm notification failed: {response.status_code} {response.text}")
+        return None
+    else:
+        logging.info("Manager alarm notification set correctly!")
+        return None
+
+
 def main() -> None:
     # manager_connectivity_test(manager_url)
     session_id = manager_jsession_id(manager_url, login, password)
