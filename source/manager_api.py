@@ -154,7 +154,7 @@ def alarm_notification(manager_url: str, jsession_id: str, manager_token: str) -
           "noreply@cisco.com"
         ]
     }
-    response = requests.post(url=url, headers=headers, data=payload, verify=False)
+    response = requests.post(url=url, headers=headers, json=payload, verify=False)
     if response.status_code != 202:
         logging.info(f"Manager alarm notification failed: {response.status_code} {response.text}")
         return None

@@ -80,8 +80,8 @@ env:
 # 7. Deploy the Build to your desired Environment
 
 jobs:
-  twilio_function:
-    name: 'Twilio Function'
+  twilio_function_and_manager:
+    name: 'Twilio Function and Manager'
     # if: ${{ github.event_name != 'workflow_dispatch' }}
     runs-on: self-hosted
     # runs-on: ubuntu-latest
