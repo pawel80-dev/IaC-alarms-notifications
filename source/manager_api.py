@@ -95,8 +95,8 @@ def alarm_notification(manager_url: str, jsession_id: str, manager_token: str,
         "webhookPassword": webhook_pass,
         "webhookUrl": webhook_url,
         "updatedBy": "no_admin",
-        "devicesAttached": "C8200-1N-4T-FGL2540LAEM, C8200-1N-4T-FGL2540LAWH",
-        # "devicesAttached": ["C8200-1N-4T-FGL2540LAWH"],
+        "devicesAttached": "C8200-1N-4T-XXXXXXXXXXX, C8200-1N-4T-YYYYYYYYYYY",
+        # "devicesAttached": ["C8200-1N-4T-XXXXXXXXXXX"],
         "emailThreshold": 5,
         "accountDetailsArray": [
           "noreply@cisco.com"
