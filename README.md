@@ -12,9 +12,10 @@ The purpose of this project is to demonstrate how to integrate Cisco Manager ala
 > Use: Display-services-data option to retrieve information about existing services.
 
 Specific parameters need to be delivered per action:  
-1. For service deployment you will need ...
-2. For environment variables you will need ...
-3. For service remove you will need ...
+1. For service deployment you will need to provide: service name, function name, environment type
+2. For environment variables you will need to provide: service SID, environment SID, variable key, variable value
+3. For function code deployment you will need to provide: service SID, function SID, environment SID
+4. For service remove you will need to provide: service SID
 
 ![alt text](drawings/alarms_workflow_menu_v01.png)  
 *Alarm notification Github workflow menu*    
