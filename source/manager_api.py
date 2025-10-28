@@ -9,12 +9,9 @@ logging.basicConfig(level=logging.INFO)
 # Suppress certificate warnings
 requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
 
-
 manager_url = ""
 login = ""
 password = ""
-my_uuid = ""
-hostname = ""
 
 
 def manager_connectivity_test(manager_url: str) -> None:
@@ -79,8 +76,9 @@ def manager_logout(manager_url: str, jsession_id: str) -> None:
         return None
 
 
-def alarm_notification(manager_url: str, jsession_id: str, manager_token: str) -> None:
-    api = "/notifications/rule"
+def alarm_notification(manager_url: str, jsession_id: str, manager_token: str, 
+                       webhook_user: str, webhook_pass: str, webhook_url: str) -> None:
+    api = "/dataservice/notifications/rule"
     url = manager_url + api
     headers = {
         "Content-Type": "application/json",
@@ -88,16 +86,17 @@ def alarm_notification(manager_url: str, jsession_id: str, manager_token: str) -
         "X-XSRF-TOKEN": manager_token
     }
     payload = {
-        "notificationRuleName": "testwebhook",
+        "notificationRuleName": "IntStatusChanged",
         "severity": "Medium",
-        "alarmName": "BFD_Node_Up",
+        "alarmName": "Interface_State_Change",
         "accountDetails": "noreply@cisco.com",
         "webHookEnabled": True,
-        "webhookUsername": "admin",
-        "webhookPassword": "admin",
-        "webhookUrl": "https://localhost:8444",
-        "updatedBy": "admin",
-        "devicesAttached": "1712133e-0246-4281-8152-3317b796d2bc",
+        "webhookUsername": webhook_user,
+        "webhookPassword": webhook_pass,
+        "webhookUrl": webhook_url,
+        "updatedBy": "no_admin",
+        "devicesAttached": "C8200-1N-4T-FGL2540LAEM, C8200-1N-4T-FGL2540LAWH",
+        # "devicesAttached": ["C8200-1N-4T-FGL2540LAWH"],
         "emailThreshold": 5,
         "accountDetailsArray": [
           "noreply@cisco.com"
@@ -116,10 +115,7 @@ def main() -> None:
     # manager_connectivity_test(manager_url)
     session_id = manager_jsession_id(manager_url, login, password)
     token = manager_token(manager_url, session_id)
-    device_list = manager_device_list(manager_url, session_id, token)
-    device_uuid = find_device(device_list, hostname)
-    bootstrap_file = manager_bootstrap_gen(manager_url, session_id, token, device_uuid)
-    logging.info(bootstrap_file)
+    alarm_notification(manager_url, session_id, token)
     manager_logout(manager_url, session_id)
 
 

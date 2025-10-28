@@ -68,6 +68,7 @@ env:
   NODE_JS_CODE_PATH: 'source/alarm_func.js'
   TW_URL: 'https://serverless.twilio.com/v1/Services'
   TW_CODE_URL: 'https://serverless-upload.twilio.com/v1/Services'
+  webhook_url: 'https://alarms2-1827-dev.twil.io/api?alarmtype=intstatus'
 
 
 ##################### Twilio Function Deployment Steps: #####################
@@ -172,4 +173,7 @@ jobs:
           python ${{ env.PY_CODE_PATH }}/manager_alarms_config.py \
                  ${{ secrets.C_MANAGER_URL }} \
                  ${{ secrets.C_MANAGER_LOGIN }} \
-                 ${{ secrets.C_MANAGER_PASSWORD }}
+                 ${{ secrets.C_MANAGER_PASSWORD }} \
+                 ${{ secrets.C_MANAGER_WEBHOOK_USER }} \
+                 ${{ secrets.C_MANAGER_WEBHOOK_PASS }} \
+                 ${{ env.webhook_url }}
