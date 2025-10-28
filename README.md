@@ -16,5 +16,5 @@ Specific parameters need to be delivered per action:
 2. For environment variables you will need ...
 3. For service remove you will need ...
 
-![alt text](drawings/alarms_workflow_menu_v01.png)
+![alt text](drawings/alarms_workflow_menu_v01.png)  
 *Alarm notification Github workflow menu*    
